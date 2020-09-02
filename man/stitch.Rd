@@ -2,19 +2,21 @@
 % Please edit documentation in R/stitch.R
 \name{stitch}
 \alias{stitch}
-\alias{stitch.data.table}
 \alias{stitch.data.frame}
+\alias{stitch.data.table}
 \title{stitch}
 \usage{
 stitch(lhs, rhs, on = NULL, ...)
 
-\method{stitch}{data.table}(
+\method{stitch}{data.frame}(
   lhs,
   rhs,
   on = NULL,
   lhs.prefix = get_pipe_source_name(lhs),
   rhs.prefix = deparse(substitute(rhs))
 )
+
+\method{stitch}{data.table}(lhs, rhs, on = NULL, rhs.prefix = deparse(substitute(rhs)))
 
 \method{stitch}{data.frame}(
   lhs,
@@ -25,13 +27,11 @@ stitch(lhs, rhs, on = NULL, ...)
 )
 }
 \arguments{
-\item{lhs}{data; left side data for join}
+\item{lhs}{data; left-handed side for LEFT JOIN}
 
-\item{rhs}{data; right side data for join}
+\item{rhs}{data; right-handed side data for LEFT JOIN}
 
 \item{on}{character; join specification see \code{\link[data.table:data.table]{data.table::data.table()}}}
-
-\item{lhs.prefix}{character; name derived from pipe source}
 
 \item{rhs.prefix}{character; prefix for columns from the right}
 }
@@ -39,20 +39,22 @@ stitch(lhs, rhs, on = NULL, ...)
 Safe Left-Join for training/scoring data creation
 }
 \details{
-stitch provides safe left-joins for building rectangularized tables, the
+stitch provides safe LEFT JOINS for building rectangularized tables, the
 kind used for modeling and other analyses.
 \enumerate{
 \item Supports LEFT JOINS using \code{on}, \code{key} or a natural join
+\item Preserves column ordering keeping LHS names on the left.
 \item Handles column name collisions by auto prefixing the \code{right-side} data
 \item Preserves column ordering.
 }
 }
 \examples{
 
-left <- data.table( letters = letters[1:5], numbers=1:5 )
-right <- data.table( lets = letters[1:6], numbers=1:6 )
+require(data.table)
+left <- data.table( id = c(1,1,2,2,4), amount=1:5 )
+right <- data.table( id = 1:6, type=letters[1:6]  )
 
-left \%>\% stitch(right, on=c("letters"="lets" ) )
+left \%>\% stitch(right)
 
 
 }

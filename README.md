@@ -7,11 +7,15 @@
 <!-- badges: end -->
 
 The **stitch** package provides a convenient and safe LEFT JOINS mechanism for 
-table-like objects. The OUTER JOINS are common in data science applications 
-because building training or test tables often requires joining transaction/fact
-based details with dimensional data.  
+table-like objects. OUTER JOINS are common in data science applications 
+because they are used to combine transaction/fact-based details with 
+dimensional data. The LEFT JOIN is commonly used when making predictions or 
+inference at the transactional grain when starting with transactional data.
 
-The function `stitch()` is intended to make this easy and fool proof.
+The function `stitch()` is intended to make this easy and fool-proof. It is a 
+pipeable function, that works on any table-like object, perserves 
+column-ordering, and handles name collisions by prefixing column names with 
+the name of their source.
 
 
 
@@ -19,10 +23,9 @@ The function `stitch()` is intended to make this easy and fool proof.
 
 * Use with any table-like objects (data.frames, data.tables, tibbles)
 * Pipeable
-* Automatically prefix column-name collisions with the source prefix
 * Column Order Preserving
 * Use NATURAL JOINS (using matching column names)
-* Auto Prefix of RHS names
+* Automatically handling name-collisions by auto prefix collisions with RHS name
 
 ## FUTURE:
 * Idempotent: Multiple joins of the same data do not result

@@ -2,32 +2,35 @@
 #'
 #' Safe Left-Join for training/scoring data creation
 #'
-#' @param lhs data; left side data for join
-#' @param rhs data; right side data for join
+#' @param lhs data; left-handed side for LEFT JOIN
+#' @param rhs data; right-handed side data for LEFT JOIN
 #' @param on character; join specification see [data.table::data.table()]
-#' @param lhs.prefix character; name derived from pipe source
+# @param lhs.prefix character; name derived from pipe source
 #' @param rhs.prefix character; prefix for columns from the right
 #'
 #' @details
 #'
-#' stitch provides safe left-joins for building rectangularized tables, the
+#' stitch provides safe LEFT JOINS for building rectangularized tables, the
 #' kind used for modeling and other analyses.
 #'
 #' 1. Supports LEFT JOINS using `on`, `key` or a natural join
+#' 2. Preserves column ordering keeping LHS names on the left.
 #' 2. Handles column name collisions by auto prefixing the `right-side` data
 #' 3. Preserves column ordering.
 #'
 #' @examples
 #'
-#' left <- data.table( letters = letters[1:5], numbers=1:5 )
-#' right <- data.table( lets = letters[1:6], numbers=1:6 )
+#' require(data.table)
+#' left <- data.table( id = c(1,1,2,2,4), amount=1:5 )
+#' right <- data.table( id = 1:6, type=letters[1:6]  )
 #'
-#' left %>% stitch(right, on=c("letters"="lets" ) )
+#' left %>% stitch(right)
 #'
 #'
 #' @importFrom stringr str_replace
 #' @import data.table
 #' @import stringr
+#' @import magrittr
 #' @export
 
 
@@ -35,14 +38,26 @@ stitch <- function(lhs, rhs, on=NULL, ...)  UseMethod('stitch')
 
 #' @rdname stitch
 #' @export
+stitch.data.frame <- function(lhs, rhs, on=NULL, ...) {
+
+  ret <- stitch( lhs %>% setDT(), rhs=rhs, on=on, ...)
+  as.data.frame(ret)
+
+}
+
+
+#' @rdname stitch
+#' @export
 stitch.data.table <- function(
                       lhs
                     , rhs
                     , on=NULL
-                    , lhs.prefix  = get_pipe_source_name(lhs)
+#                    , lhs.prefix  = get_pipe_source_name(lhs)
                     , rhs.prefix = deparse( substitute(rhs) )
                   ) {
 
+
+  rhs %>% setDT()
 
   # JOIN ----
   if( ! is.null(on) ) {                         # using `on`
@@ -72,9 +87,9 @@ stitch.data.table <- function(
 
   # Collided names with prefixes ----
 
-  # * Fix `x.` prefixed columns ----
-     lhs_names.new <- ret %>% names() %>% str_replace("^x\\.", lhs.prefix %>% str_suffix('.') )
-     ret %>% setnames( ret %>% names(), lhs_names.new )
+  # * Fix `x.` prefixed columns ----  # CTB: This is not working.
+  #   lhs_names.new <- ret %>% names() %>% str_replace("^x\\.", lhs.prefix %>% str_suffix('.') )
+  #   ret %>% setnames( ret %>% names(), lhs_names.new )
 
   # * Fix `i.` collided names ----
     rhs_names.new <- ret %>% names() %>% str_replace("^i\\.", rhs.prefix %>% str_suffix('.') )
@@ -83,9 +98,10 @@ stitch.data.table <- function(
 
   # Order Columns ----
   # order <- c(names(lhs), names(rhs) )
-  # ret %>% names %>% setdiff(order)
-  ret %>% setorderv( rhs_names.new )
-  ret %>% setorderv( lhs_names.new %>% intersect(names(ret) ))
+  ## ret %>% names %>% setdiff(order)
+  # ret %>% setcolorder( rhs_names.new )
+  ret %>% setcolorder( names(lhs) )
+  # ret %>% setorderv( lhs_names.new %>% intersect(names(ret) ))
 
   ret
 
