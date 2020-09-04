@@ -6,20 +6,15 @@
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
-The **stitch** package provides a convenient and safe LEFT JOINS mechanism for 
-table-like objects. OUTER JOINS are common in data science applications 
-because they are used to combine transaction/fact-based details with 
-dimensional data. The LEFT JOIN is commonly used when making predictions or 
-inference at the transactional grain when starting with transactional data.
-
-The function `stitch()` is intended to make this easy and fool-proof. It is a 
-pipeable function, that works on any table-like object, perserves 
-column-ordering, and handles name collisions by prefixing column names with 
-the name of their source.
-
-
+The **stitch** package provides convenient and safe LEFT JOINS for 
+table-like objects. LEFT JOINS are commonly used in data science applications 
+when combining transaction/fact-based details with 
+dimensional data. 
 
 ## FEATURES
+
+The function `stitch()` is intended to make this easy and fool-proof. It is a 
+pipeable function, that works on any table-like object.
 
 * Use with any table-like objects (data.frames, data.tables, tibbles)
 * Pipeable
@@ -27,9 +22,16 @@ the name of their source.
 * Use NATURAL JOINS (using matching column names)
 * Automatically handling name-collisions by auto prefix collisions with RHS name
 
-## FUTURE:
+
+1. Supports LEFT JOINS using `on`, `key` or a NATURAL JOIN.
+2. Preserves column ordering, keeping LHS names on the left.
+3. Handles column name collisions by auto-prefixing RHS column names with the
+    name of the data set.
+
+## FUTURE(?)
 * Idempotent: Multiple joins of the same data do not result
 * Auto Prefix of LHS names
+
 
 ## Installation
 

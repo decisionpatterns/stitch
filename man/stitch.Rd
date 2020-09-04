@@ -8,23 +8,9 @@
 \usage{
 stitch(lhs, rhs, on = NULL, ...)
 
-\method{stitch}{data.frame}(
-  lhs,
-  rhs,
-  on = NULL,
-  lhs.prefix = get_pipe_source_name(lhs),
-  rhs.prefix = deparse(substitute(rhs))
-)
+\method{stitch}{data.frame}(lhs, rhs, on = NULL, ...)
 
 \method{stitch}{data.table}(lhs, rhs, on = NULL, rhs.prefix = deparse(substitute(rhs)))
-
-\method{stitch}{data.frame}(
-  lhs,
-  rhs,
-  on = NULL,
-  lhs.prefix = get_pipe_source_name(lhs),
-  rhs.prefix = deparse(substitute(rhs))
-)
 }
 \arguments{
 \item{lhs}{data; left-handed side for LEFT JOIN}

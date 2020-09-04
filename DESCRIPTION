@@ -1,22 +1,26 @@
 Package: stitch
 Type: Package
 Title: stitch - Safe Left Joins for Data Rectangularizaton
-Version: 0.1.1
-Date: 2020-09-02
+Version: 0.1.2
+Date: 2020-09-04
 Authors@R: c(
       person("Christopher", "Brown", , "chris.brown@decisionpatterns.com", c("aut", "cre") ),
       person("Decision Patterns", role = "cph")
     )
 Description: Perform convenient and safe LEFT JOINS for data rectangularization. 
-License: Decision Patterns Client License
+License: GPL-3
 Imports:
     stringr (>= 1.0.0),
     data.table (>= 1.13.0),
     stringr.tools (>= 0.4.0),
     magrittr (>= 1.5)
 Suggests:
-    testthat
+    testthat,
+    data.table,
+    knitr,
+    rmarkdown
 Repository: CRAN
 RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
+VignetteBuilder: knitr

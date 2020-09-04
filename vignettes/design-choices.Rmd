@@ -1,0 +1,32 @@
+---
+title: "Design Choices"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design Choices}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+These are the rational for this package:
+
+
+##  `data.table` provides an inconvenient LEFT JOIN mechanism.  
+
+In `data.table` the LEFT JOINS occur by putting the LHS of the join on the 
+right, e.g.
+
+     X[DT, on="x"]                         # left join
+
+where DT is the LHS join table.  This just looks ugly.
+
+
+## COLUMN NAME COLLISIONS are not insufficiently disambiguated 
+
+`data.table` prefixes column-name collisions with `x.` and `i.`.  `dplyr` 
+suffixes with `.x` and `.y`.  These names are not descriptive enough for joins 
+where lots of tables are brought together.  
+
+
+## COLUMN ORDERING is not (always) preserved.
+
+The column ordering should be preserved keeping LHS columns on the LHS.

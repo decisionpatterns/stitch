@@ -10,13 +10,13 @@
 #'
 #' @details
 #'
-#' stitch provides safe LEFT JOINS for building rectangularized tables, the
-#' kind used for modeling and other analyses.
+#' `stitch` provides safe LEFT JOINS for building rectangularized tables, the
+#' kind used for modeling and other analyses.  It does the following:
 #'
-#' 1. Supports LEFT JOINS using `on`, `key` or a natural join
-#' 2. Preserves column ordering keeping LHS names on the left.
-#' 2. Handles column name collisions by auto prefixing the `right-side` data
-#' 3. Preserves column ordering.
+#' 1. Supports LEFT JOINS using `on`, `key` or a NATURAL JOIN.
+#' 2. Preserves column ordering, keeping LHS columns on the left.
+#' 3. Handles column name collisions by auto-prefixing RHS column names with the
+#'    name of the data set.
 #'
 #' @examples
 #'
@@ -108,17 +108,5 @@ stitch.data.table <- function(
 }
 
 
-#' @rdname stitch
-#' @export
-stitch.data.frame <- function(   lhs
-                    , rhs
-                    , on=NULL
-                    , lhs.prefix  = get_pipe_source_name(lhs)
-                    , rhs.prefix = deparse(substitute(rhs))
-) {
-
-  stop("stitch.data.table() not implemented yet.")
-
-}
 
 
